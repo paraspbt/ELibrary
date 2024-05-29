@@ -46,7 +46,7 @@ fun AppSplashScreen(navController: NavController){
         if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()){
             navController.navigate(AppScreens.LoginScreen.name)
         }else {
-            navController.navigate(AppScreens.ReaderHomeScreen.name)
+            navController.navigate(AppScreens.AppHomeScreen.name)
         }
 
 
@@ -56,8 +56,8 @@ fun AppSplashScreen(navController: NavController){
 
     Surface(modifier = Modifier
         .padding(15.dp)
-        .size(330.dp)
-        .scale(scale.value),
+        .size(330.dp),
+//        .scale(scale.value),
         shape = CircleShape,
         color = Color.White,
         border = BorderStroke(width = 2.dp,
@@ -68,14 +68,14 @@ fun AppSplashScreen(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "A. Reader",
+            Text(text = "E-Library",
                 modifier = Modifier.padding(bottom = 16.dp),
                 style = MaterialTheme.typography.headlineLarge,
                 color = Color.Red.copy(alpha = 0.5f))
-            Spacer(modifier = Modifier.height(15.dp))
-            Text(text = "\"Read. Change. Yourself \"",
-                style = MaterialTheme.typography.headlineSmall,
-                color = Color.LightGray)
+//            Spacer(modifier = Modifier.height(15.dp))
+//            Text(text = "\"Read. Change. Yourself \"",
+//                style = MaterialTheme.typography.headlineSmall,
+//                color = Color.LightGray)
 
 
 

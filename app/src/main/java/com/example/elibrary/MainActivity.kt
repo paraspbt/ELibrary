@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.elibrary.navigation.AppNavigation
@@ -18,7 +19,7 @@ import com.example.elibrary.ui.theme.ELibraryTheme
 import com.google.firebase.firestore.FirebaseFirestore
 //import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +46,4 @@ fun App() {
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ELibraryTheme {
 
-    }
-}

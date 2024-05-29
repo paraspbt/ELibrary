@@ -1,5 +1,6 @@
 package com.example.elibrary.screens.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -21,27 +25,46 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.elibrary.R
 import com.example.elibrary.components.EmailInput
 import com.example.elibrary.components.PasswordInput
+import com.example.elibrary.navigation.AppScreens
 
 @Composable
-fun AppLoginScreen(navController: NavController) {
+fun AppLoginScreen(navController: NavController,viewModel: LoginViewModel = viewModel()) {
     val showLoginForm = rememberSaveable { mutableStateOf(true) }
-    if (showLoginForm.value) UserForm(isCreateAccount = false)
-    else UserForm(isCreateAccount = true)
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (showLoginForm.value) UserForm(isCreateAccount = false)
-            else UserForm(isCreateAccount = true)
+            if (showLoginForm.value) {
+                UserForm(isCreateAccount = false) { email, password ->
+                    viewModel.signInWithEmailAndPassword(email, password){
+                        navController.navigate(AppScreens.AppHomeScreen.name)
+                    }
+                }
+            }
+            else {
+                UserForm(loading = false, isCreateAccount = true){ email, password ->
+                    viewModel.createUserWithEmailAndPassword(email, password){
+                        navController.navigate(AppScreens.AppHomeScreen.name)
+                    }
+
+                }
+            }
         }
         Spacer(modifier = Modifier.height(15.dp))
         Row(
@@ -80,7 +103,9 @@ fun UserFormPreview() {
 
 @Composable
 fun UserForm(
-    isCreateAccount: Boolean
+    loading: Boolean = false,
+    isCreateAccount: Boolean = false,
+    onDone:(String,String)->Unit = {email,password->}
 ) {
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
@@ -89,13 +114,19 @@ fun UserForm(
 //                && email.value.contains("@")
     }
     val keyboardController = LocalSoftwareKeyboardController.current
-    Column {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
         EmailInput(
             value = email,
         )
         PasswordInput(
             value = password,
-            onSubmit = { keyboardController?.hide() }
+            onSubmit = {
+                keyboardController?.hide()
+                onDone(email.value.trim(), password.value.trim())
+            }
         )
         Submit(
             label = if (isCreateAccount) "Create Account" else "Login",
@@ -103,6 +134,7 @@ fun UserForm(
             validInputs = valid,
             onClick = {
                 keyboardController?.hide()
+                onDone(email.value.trim(), password.value.trim())
             }
         )
     }
@@ -129,3 +161,4 @@ fun Submit(
         else Text(text = label, modifier = Modifier.padding(5.dp))
     }
 }
+

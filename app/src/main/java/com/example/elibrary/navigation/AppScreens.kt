@@ -4,25 +4,25 @@ enum class AppScreens {
     SplashScreen,
     LoginScreen,
     CreateAccountScreen,
-    ReaderHomeScreen,
+    AppHomeScreen,
     SearchScreen,
     DetailScreen,
     UpdateScreen,
     ReaderStatsScreen;
 
-    companion object {
-        fun fromRoute(route: String?): AppScreens
-                = when(route?.substringBefore("/")) {
-            SplashScreen.name -> SplashScreen
-            LoginScreen.name -> LoginScreen
-            CreateAccountScreen.name -> CreateAccountScreen
-            ReaderHomeScreen.name -> ReaderHomeScreen
-            SearchScreen.name -> SearchScreen
-            DetailScreen.name -> DetailScreen
-            UpdateScreen.name -> UpdateScreen
-            ReaderStatsScreen.name -> ReaderStatsScreen
-            null -> ReaderHomeScreen
-            else -> throw IllegalArgumentException("Route $route is not recognized")
-        }
-    }
+//    companion object {
+//        fun fromRoute(route: String?): AppScreens
+//                = when(route?.substringBefore("/")) {
+//            SplashScreen.name -> SplashScreen
+//            LoginScreen.name -> LoginScreen
+//            CreateAccountScreen.name -> CreateAccountScreen
+//            AppHomeScreen.name -> AppHomeScreen
+//            SearchScreen.name -> SearchScreen
+//            DetailScreen.name -> DetailScreen
+//            UpdateScreen.name -> UpdateScreen
+//            ReaderStatsScreen.name -> ReaderStatsScreen
+//            null -> AppHomeScreen
+//            else -> throw IllegalArgumentException("Route $route is not recognized")
+//        }
+//    }
 }
